@@ -1,0 +1,41 @@
+# Node.js dependencies
+node_modules/
+npm-debug.log*
+yarn.lock
+package-lock.json
+
+# TypeScript build
+dist/
+out/
+*.tsbuildinfo
+
+# WebdriverIO, Playwright, Selenium, Serenity, y otros frameworks de pruebas
+allure-results/
+allure-report/
+logs/
+test-results/
+screenshots/
+coverage/
+junit/
+target/
+mochawesome-report/
+*.log
+
+# MacOS y Linux
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Windows
+Thumbs.db
+*.lnk
+
+# Visual Studio Code
+.vscode/
+*.code-workspace
+*.sln
+*.csproj
+*.vcxproj
+*.vcxproj.filters
+.vs/
