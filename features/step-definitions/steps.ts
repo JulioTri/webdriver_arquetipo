@@ -1,7 +1,7 @@
 import { Given, When, Then, type DataTable } from '@cucumber/cucumber'
 import { Ensure, equals } from '@serenity-js/assertions'
 import { type Actor } from '@serenity-js/core'
-import { TodoList } from '../../serenity/todo-list-app/TodoList'
+import { TodoList } from '../../serenity/todo-list-app/TodoList.js'
 
 Given('{actor} starts/started with a list containing:', async (actor: Actor, table: DataTable) => {
     await actor.attemptsTo(

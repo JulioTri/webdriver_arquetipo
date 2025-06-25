@@ -10,9 +10,7 @@
         "types": [
             "node",
             "@wdio/globals/types",
-            "expect-webdriverio",
-            "@wdio/browserstack-service",
-            "@wdio/appium-service"
+            "expect-webdriverio"
         ],
         "skipLibCheck": true,
         "noEmit": true,
@@ -22,10 +20,13 @@
         "strict": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "noFallthroughCasesInSwitch": true
+        "noFallthroughCasesInSwitch": true,
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true
     },
     "include": [
         "test",
+        "features",
         "wdio.conf.ts"
     ]
 }

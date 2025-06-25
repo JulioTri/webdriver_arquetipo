@@ -1,5 +1,6 @@
 Feature: Login on Dislicores
 
+  @login
   Scenario: Navigate to the Dislicores QA URL and log in
     Given a user named Julio navigate to "https://d2gka11oliiwqi.cloudfront.net/"
     Then he should see that the text "Iniciar sesión" equals the expected text

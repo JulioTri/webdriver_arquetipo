@@ -1,0 +1,163 @@
+[
+  {
+    "description": "",
+    "elements": [
+      {
+        "description": "",
+        "id": "dislicores-page-home;select-a-subsidiary",
+        "keyword": "Scenario",
+        "line": 10,
+        "name": "Select a subsidiary",
+        "steps": [
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 4,
+            "name": "a user named Julio navigate to \"https://d2gka11oliiwqi.cloudfront.net/\"",
+            "match": {
+              "location": "features\\step-definitions\\Login_steps.ts:16"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4830820200
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 5,
+            "name": "he should see that the text \"Iniciar sesión\" equals the expected text",
+            "match": {
+              "location": "features\\step-definitions\\Login_steps.ts:26"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1739054700
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 6,
+            "name": "he clicks on the Iniciar sesión button",
+            "match": {
+              "location": "features\\step-definitions\\Login_steps.ts:41"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 901969299
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 7,
+            "name": "he waits until the sidebar is displayed",
+            "match": {
+              "location": "features\\step-definitions\\Login_steps.ts:49"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 466541000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 8,
+            "name": "he enters the username \"1088021485\" and password \"1234\"",
+            "match": {
+              "location": "features\\step-definitions\\Login_steps.ts:57"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3449894499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 11,
+            "name": "he selects a subsidiary \"001\"",
+            "match": {
+              "location": "features\\step-definitions\\Home_steps.ts:12"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 10733602399,
+              "error_message": "Error: Couldn't find element with selector \"//div[@id='subsidiary-select-home']\"\n    at Browser.findDeepElement (C:\\Pragma_Julio\\Proyectos\\webdriverio\\proyecto_v1\\node_modules\\webdriverio\\build\\node.js:8061:12)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async Browser.$ (C:\\Pragma_Julio\\Proyectos\\webdriverio\\proyecto_v1\\node_modules\\webdriverio\\build\\node.js:928:15)\n    at async Browser.wrapCommandFn (C:\\Pragma_Julio\\Proyectos\\webdriverio\\proyecto_v1\\node_modules\\@wdio\\utils\\build\\index.js:902:23)\n    at async WebdriverIOLocator.resolveNativeElement (C:\\Pragma_Julio\\Proyectos\\webdriverio\\proyecto_v1\\node_modules\\@serenity-js\\webdriverio\\src\\screenplay\\models\\locators\\WebdriverIOLocator.ts:81:25)\n    at async WebdriverIOLocator.nativeElement (C:\\Pragma_Julio\\Proyectos\\webdriverio\\proyecto_v1\\node_modules\\@serenity-js\\webdriverio\\src\\screenplay\\models\\locators\\WebdriverIOLocator.ts:67:20)\n    at async WebdriverIOPageElement.click (C:\\Pragma_Julio\\Proyectos\\webdriverio\\proyecto_v1\\node_modules\\@serenity-js\\webdriverio\\src\\screenplay\\models\\WebdriverIOPageElement.ts:65:25)\n    at async QuestionStatement.answeredBy (C:\\Pragma_Julio\\Proyectos\\webdriverio\\proyecto_v1\\node_modules\\@serenity-js\\core\\src\\screenplay\\Question.ts:601:23)\n    at async DynamicallyGeneratedInteraction.interaction (C:\\Pragma_Julio\\Proyectos\\webdriverio\\proyecto_v1\\features\\Dislicores\\Interactions\\Utils\\Click.ts:9:9)\n    at async PerformActivities.perform (C:\\Pragma_Julio\\Proyectos\\webdriverio\\proyecto_v1\\node_modules\\@serenity-js\\core\\src\\screenplay\\abilities\\PerformActivities.ts:60:13)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "he puts in the search engine the products defined in the route \"C:\\Pragma_Julio\\Proyectos\\webdriverio\\proyecto_v1\\features\\Dislicores\\JSON\\products\\products.json\"",
+            "match": {
+              "location": "features\\step-definitions\\Home_steps.ts:18"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 13,
+            "name": "he continue with checkout",
+            "match": {
+              "location": "features\\step-definitions\\Home_steps.ts:24"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 14,
+            "name": "he pay with \"C:\\Pragma_Julio\\Proyectos\\webdriverio\\proyecto_v1\\features\\Dislicores\\JSON\\checkout\\methods.json\" method",
+            "match": {
+              "location": "features\\step-definitions\\Home_steps.ts:29"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 15,
+            "name": "he validate the payment",
+            "match": {
+              "location": "features\\step-definitions\\Home_steps.ts:34"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 28102299
+            }
+          }
+        ],
+        "tags": [],
+        "type": "scenario"
+      }
+    ],
+    "id": "dislicores-page-home",
+    "line": 1,
+    "keyword": "Feature",
+    "name": "Dislicores Page Home",
+    "tags": [],
+    "uri": "features\\Dislicores\\Features\\Home.feature"
+  }
+]

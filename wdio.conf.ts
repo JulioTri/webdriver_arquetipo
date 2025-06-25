@@ -6,15 +6,9 @@ export const config: WebdriverIOConfig = {
     // ====================
     // WebdriverIO supports running e2e tests as well as unit and component tests.
     runner: 'local',
-    autoCompileOpts: {
-        autoCompile: true,
-        tsNodeOpts: {
-            project: './tsconfig.json',
-            transpileOnly: true
-        }
-    },
+    tsConfigPath: './tsconfig.json',
     
-    //port: 4744,
+    
     //
     // ==================
     // Specify Test Files
@@ -31,7 +25,7 @@ export const config: WebdriverIOConfig = {
     // of the config file unless it's absolute.
     //
     specs: [
-        './features/**/Login.feature'
+        './features/Dislicores/Features/Home.feature'
     ],
     // Patterns to exclude.
     exclude: [
@@ -65,7 +59,15 @@ export const config: WebdriverIOConfig = {
             args: ['--start-maximized',]
         },
         acceptInsecureCerts: true,
-    }],
+    }, 
+    // {
+    //     browserName: 'firefox'
+    // }, {
+    //     browserName: 'safari'
+    // }, {
+    //     browserName: 'MicrosoftEdge'
+    // }
+    ],
 
     //
     // ===================
@@ -79,7 +81,7 @@ export const config: WebdriverIOConfig = {
     // Set specific log levels per logger
     // loggers:
     // - webdriver, webdriverio
-    // - @wdio/browserstack-service, @wdio/devtools-service, @wdio/sauce-service
+    // - @wdio/browserstack-service, @wdio/lighthouse-service, @wdio/sauce-service
     // - @wdio/mocha-framework, @wdio/jasmine-framework
     // - @wdio/local-runner
     // - @wdio/sumologic-reporter
@@ -114,8 +116,8 @@ export const config: WebdriverIOConfig = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    // services: ['browserstack', 'appium'],
-
+    // services: [],
+    //
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
     // see also: https://webdriver.io/docs/frameworks
@@ -154,9 +156,8 @@ export const config: WebdriverIOConfig = {
     // Test reporter for stdout.
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
-    reporters: [
-        'spec',
-        ['allure', { outputDir: 'allure-results' }],
+    reporters: ['spec',
+        ['allure', {outputDir: 'allure-results'}],
         'json',
         ['video', {
             saveAllVideos: true,               // Guardar todos los videos, no solo los fallidos
@@ -164,18 +165,20 @@ export const config: WebdriverIOConfig = {
             outputDir: 'allure-results',   // Directorio para guardar videos
             addConsoleLogs: true,              // Añadir logs de consola al video
         }],
-    ],
+        ],
 
     // Cucumber configuration, see
     //  https://serenity-js.org/api/cucumber-adapter/interface/CucumberConfig/
     cucumberOpts: {
         // <string[]> (file/dir) require files before executing features
         import: [
-            './features/step-definitions/Login_steps.ts',
+            './features/step-definitions/*.ts',
             './features/support/*.ts',
         ],
         // <string[]> (type[:path]) specify native Cucumber.js output format, if needed. Optionally supply PATH to redirect formatter output (repeatable)
-        format: [ ],
+        format: [ 
+            'json:./reports/cucumber-report.json'
+        ],
         // <string> (name) specify the profile to use
         profile: '',
         // <boolean> fail if there are any undefined or pending steps
@@ -185,6 +188,7 @@ export const config: WebdriverIOConfig = {
         // <number> timeout for step definitions
         timeout: 60000,
     },
+
 
     //
     // =====

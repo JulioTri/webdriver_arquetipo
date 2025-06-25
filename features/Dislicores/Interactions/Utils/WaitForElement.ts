@@ -1,14 +1,122 @@
 import { Interaction } from '@serenity-js/core';
+import { pause } from '../../Tasks/Utils/pause'; // Para WebdriverIO con ES Modules
+import { ValidateElements } from '../../Questions/Utils/ValidateElement';
 
 export const WaitForElement = {
-  toBeVisible: (element: any) =>
+  toBeVisible: (element: any, timeout:number = 10000, polling:number=500) =>
     Interaction.where(
-      `#actor waits until the element ${element.toString()} is visible`,
-      async (actor) => {
-        await element.waitForDisplayed({
-          timeout: 5000, // Tiempo máximo de espera
-          timeoutMsg: `The element ${element.toString()} was not visible within the expected time`,
-        }).answeredBy(actor);
+      `#actor waits until ${element.toString()} is visible`,
+      async actor => {
+        const start = Date.now();
+
+        while (true) {
+          const visible = await ValidateElements.isVisible(element).answeredBy(actor);
+          if (visible) break;
+
+          if (Date.now() - start > timeout) {
+            throw new Error(`Timeout: ${element.toString()} was not visible within ${timeout}ms`);
+          }
+
+          await pause(polling);
+        }
       }
     ),
+
+  toBeClickable: (element: any, timeout:number = 10000, polling:number=500) =>
+    Interaction.where(
+      `#actor waits until ${element.toString()} is clickable`,
+      async actor => {
+        const start = Date.now();
+
+        while (true) {
+          const clickable = await ValidateElements.isClickable(element).answeredBy(actor);
+          if (clickable) break;
+
+          if (Date.now() - start > timeout) {
+            throw new Error(`Timeout: ${element.toString()} was not clickable within ${timeout}ms`);
+          }
+
+          await pause(polling);
+        }
+      }
+    ),
+
+  toBeStable: (element: any, timeout:number = 10000, polling:number=500) =>
+    Interaction.where(
+      `#actor waits until ${element.toString()} is stable (clickable)`,
+      async actor => {
+        const start = Date.now();
+
+        while (true) {
+          const clickable = await ValidateElements.isClickable(element).answeredBy(actor);
+          if (clickable) break;
+
+          if (Date.now() - start > timeout) {
+            throw new Error(`Timeout: ${element.toString()} was not stable (clickable) within ${timeout}ms`);
+          }
+
+          await pause(polling);
+        }
+      }
+    ),
+
+  toBeExist: (element: any, timeout:number = 10000, polling:number=500) =>
+    Interaction.where(
+      `#actor waits until ${element.toString()} exists`,
+      async actor => {
+        const start = Date.now();
+
+        while (true) {
+          const present = await ValidateElements.isPresent(element).answeredBy(actor);
+          if (present) break;
+
+          if (Date.now() - start > timeout) {
+            throw new Error(`Timeout: ${element.toString()} did not appear in ${timeout}ms`);
+          }
+
+          await pause(polling);
+        }
+      }
+    ),
+
+  untilNotPresent: (element: any, timeout:number = 10000, polling:number=500) =>
+    Interaction.where(
+      `#actor waits until ${element.toString()} is no longer present or visible`,
+      async actor => {
+        const startTime = Date.now();
+
+        while (true) {
+          const isPresent = await ValidateElements.isPresent(element).answeredBy(actor);
+          const isVisible = isPresent
+            ? await ValidateElements.isVisible(element).answeredBy(actor)
+            : false;
+
+          if (!isPresent || !isVisible) break;
+
+          if (Date.now() - startTime > timeout) {
+            throw new Error(`Timeout: ${element.toString()} is still present after ${timeout}ms`);
+          }
+
+          await pause(polling);
+        }
+      }
+    ),
+
+  forXTime: (timeout: number = 10000) =>
+    Interaction.where(
+      `#actor waits ${timeout}ms`,
+      async () => {
+        await pause(timeout);
+      }
+    ),
+
+  other: (element: any, timeout:number = 10000, polling:number=500) =>
+    Interaction.where(
+      `#actor logs visibility of ${element.toString()}`,
+      async () => {
+        const visible = await ValidateElements.isVisible(element);
+        console.log('¿Visible?', visible);
+      }
+    ),      
+    
 };

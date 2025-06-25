@@ -2,7 +2,7 @@ import { contain, Ensure, equals, includes, isGreaterThan } from '@serenity-js/a
 import { type Answerable, Check, d, type QuestionAdapter, Task, Wait } from '@serenity-js/core'
 import { By, Enter, ExecuteScript, isVisible, Key, Navigate, Page, PageElement, PageElements, Press, Text } from '@serenity-js/web'
 
-import { TodoListItem } from './TodoListItem'
+import { TodoListItem } from './TodoListItem.js'
 
 export class TodoList {
 
