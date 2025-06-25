@@ -21,7 +21,6 @@ target/
 mochawesome-report/
 *.log
 reports/
-serenity/
 _results_/
 
 # MacOS y Linux
