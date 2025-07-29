@@ -2,11 +2,17 @@ import {By, PageElement} from '@serenity-js/web';
 
 
 // Localizador para el elemento basado en el texto
-let modal_seleccione_sucursal = "//div[@id='subsidiary-select-home']";
-let input_search_subsidiary = "//input[@id='input-search-subsidiary-home']";
-let div_found_subsidiary = "//input[@id='input-search-subsidiary-home']//following::div[2]";
+// let modal_seleccione_sucursal = "//div[@id='subsidiary-select-home']";
+// let input_search_subsidiary = "//input[@id='input-search-subsidiary-home']";
+// let div_found_subsidiary = "//input[@id='input-search-subsidiary-home']//following::div[2]";
+// let button_continuar = "//button[@id='btn-subsidiary-select-home']";
+// let div_loading = "//div[contains(@class,'loader_loader')]";
+let h2_modal_seleccione_sucursal = "//div[@id='subsidiary-select-list']";
+let div_found_subsidiary = (subsidiaryNumber:string)=>`//*[h2='Seleccione una sucursal']//following::h4[contains(text(),'${subsidiaryNumber}')]//following::button[1]`;
+let button_ver_mas = "//*[@id='btn-subsidiary-select-show-more']";
 let button_continuar = "//button[@id='btn-subsidiary-select-home']";
 let div_loading = "//div[contains(@class,'loader_loader')]";
+let div_subsidiary_home = (subsidiaryNumber:string)=>`(//div[contains(@class,'subsidiary-info_container')]//following::p[contains(normalize-space(.),'${subsidiaryNumber}')])[2]`;
 let input_search = "//*[@id='input-search-header']";
 let div_products = "//*[@id='search-products']"
 let span_product = (sku: string)=>`//*[@id='search-products']//following::span[contains(normalize-space(.), '${sku}')]`
@@ -43,17 +49,34 @@ let btn_order_successful_message_continue = "//*[contains(h3,'¡Pedido creado ex
 export class HomeUI {
      
     //Subsidiary modal
-    static selectSubsidiaryModal = () =>
-        PageElement.located(By.xpath(modal_seleccione_sucursal)).describedAs('subsidiary selection modal ')
+    // static selectSubsidiaryModal = () =>
+    //     PageElement.located(By.xpath(modal_seleccione_sucursal)).describedAs('subsidiary selection modal ')
     
-    static searchSubsidiary = () =>
-        PageElement.located(By.xpath(input_search_subsidiary)).describedAs('subsidiary finder ')
+    // static searchSubsidiary = () =>
+    //     PageElement.located(By.xpath(input_search_subsidiary)).describedAs('subsidiary finder ')
     
-    static foundSubsidiary = () =>
-        PageElement.located(By.xpath(div_found_subsidiary)).describedAs('subsidiary resulting from the search')
+    // static foundSubsidiary = () =>
+    //     PageElement.located(By.xpath(div_found_subsidiary)).describedAs('subsidiary resulting from the search')
     
-    static chooseSubsidiary = () =>
-        PageElement.located(By.xpath(button_continuar)).describedAs('button to select the found subsidiary')
+    // static chooseSubsidiary = () =>
+    //     PageElement.located(By.xpath(button_continuar)).describedAs('button to select the found subsidiary')
+    
+    // static loading = () =>
+    //     PageElement.located(By.xpath(div_loading)).describedAs('div present while page loads')
+    static subsidiaryModal = () =>
+        PageElement.located(By.xpath(h2_modal_seleccione_sucursal)).describedAs('subsidiary selection modal ')
+    
+    static chooseSubsidiary = (subsidiaryNumber:string) =>
+        PageElement.located(By.xpath(div_found_subsidiary(subsidiaryNumber))).describedAs('subsidiary finder ')
+    
+    static showMoreSubsidiaries = () =>
+        PageElement.located(By.xpath(button_ver_mas)).describedAs('button for show all subsidiaries')
+    
+    static sucursalHome = (subsidiaryNumber:string) =>
+        PageElement.located(By.xpath(div_subsidiary_home(subsidiaryNumber))).describedAs('button to select the found subsidiary')
+
+    static continueAfterSelectSubsidiary = () =>
+        PageElement.located(By.xpath(button_continuar)).describedAs('button for continue after select subsidiary')
     
     static loading = () =>
         PageElement.located(By.xpath(div_loading)).describedAs('div present while page loads')

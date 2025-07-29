@@ -1,6 +1,7 @@
-import { Interaction } from '@serenity-js/core';
+import { Actor, Answerable, AnswersQuestions, Duration, Interaction, UsesAbilities, Wait } from '@serenity-js/core';
 import { pause } from '../../Tasks/Utils/pause'; // Para WebdriverIO con ES Modules
 import { ValidateElements } from '../../Questions/Utils/ValidateElement';
+import { isPresent, not } from '@serenity-js/assertions';
 
 export const WaitForElement = {
   toBeVisible: (element: any, timeout:number = 10000, polling:number=500) =>
@@ -79,28 +80,15 @@ export const WaitForElement = {
       }
     ),
 
-  untilNotPresent: (element: any, timeout:number = 10000, polling:number=500) =>
-    Interaction.where(
-      `#actor waits until ${element.toString()} is no longer present or visible`,
-      async actor => {
-        const startTime = Date.now();
-
-        while (true) {
-          const isPresent = await ValidateElements.isPresent(element).answeredBy(actor);
-          const isVisible = isPresent
-            ? await ValidateElements.isVisible(element).answeredBy(actor)
-            : false;
-
-          if (!isPresent || !isVisible) break;
-
-          if (Date.now() - startTime > timeout) {
-            throw new Error(`Timeout: ${element.toString()} is still present after ${timeout}ms`);
+    untilNotPresent: (element: Answerable<any>, timeout: number = 10000) =>
+      Interaction.where(
+          `#actor espera hasta que el elemento ${element.toString()} ya no esté presente`,
+          async (actor) => {
+              await (actor as Actor).attemptsTo(
+                  Wait.upTo(Duration.ofMilliseconds(timeout)).until(element, not(isPresent()))
+              );
           }
-
-          await pause(polling);
-        }
-      }
-    ),
+      ),
 
   forXTime: (timeout: number = 10000) =>
     Interaction.where(
@@ -117,6 +105,15 @@ export const WaitForElement = {
         const visible = await ValidateElements.isVisible(element);
         console.log('¿Visible?', visible);
       }
-    ),      
-    
+    ),     
+    untilPresent: (element: Answerable<any>, timeout: number = 20000) =>
+      Interaction.where(
+          `#actor espera hasta que el elemento ${element.toString()} esté presente`,
+          async (actor) => {
+              await (actor as Actor).attemptsTo(
+                  Wait.upTo(Duration.ofMilliseconds(timeout)).until(element, isPresent())
+              );
+          }
+      ),
+   
 };

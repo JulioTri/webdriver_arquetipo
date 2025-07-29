@@ -56,7 +56,15 @@ export const config: WebdriverIOConfig = {
     capabilities: [{
         browserName: 'chrome',
         'goog:chromeOptions': {
-            args: ['--start-maximized',]
+            args: [
+                '--start-maximized',
+                '--disable-infobars',
+                '--disable-extensions',
+                '--disable-blink-features=AutomationControlled',
+                '--disable-gpu',
+                '--no-sandbox',
+                '--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36'
+            ]
         },
         acceptInsecureCerts: true,
     }, 
@@ -198,6 +206,12 @@ export const config: WebdriverIOConfig = {
     // it and to build services around it. You can either apply a single function or an array of
     // methods to it. If one of them returns with a promise, WebdriverIO will wait until that promise got
     // resolved to continue.
+    before: async function () {
+        // Camufla la detección de webdriver
+        await browser.execute(() => {
+            Object.defineProperty(navigator, 'webdriver', { get: () => false });
+        });
+    },
     /**
      * Gets executed once before all workers get launched.
      * @param {object} config wdio configuration object

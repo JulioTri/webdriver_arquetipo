@@ -54,7 +54,7 @@ export const Checkout = {
         const fileContent = fs.readFileSync(pathOfMethods, 'utf-8');
         const tc = JSON.parse(fileContent); 
         console.log(tc.tc[0].name)
-        //await Scroll.to(HomeUI.creditCardQuotas()).performAs(actor),
+        await Scroll.to(HomeUI.creditCardQuotas()).performAs(actor),
         await WriteInInput.text(tc.tc[0].name).into(HomeUI.creditCardName()).performAs(actor);
         await WriteInInput.text(tc.tc[0].number).into(HomeUI.creditCardNumber()).performAs(actor);
         await WriteInInput.text(tc.tc[0].date).into(HomeUI.creditCardExpirationDate()).performAs(actor);

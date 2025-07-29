@@ -1,4 +1,4 @@
 {
-  "skus": [{ "sku": "167002", "cuantity":15 }, { "sku": "460929", "cuantity":15 }],
+  "skus": [{ "sku": "165000", "cuantity":15 }, { "sku": "460929", "cuantity":15 }],
   "categories": [{ "category": "tequila" }, { "category": "whiskey" }]
 }

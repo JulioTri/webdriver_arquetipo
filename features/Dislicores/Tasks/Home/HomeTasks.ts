@@ -7,19 +7,15 @@ import { Products } from '../../Interactions/Products/Products';
 import { Checkout } from '../../Interactions/Products/Checkout';
 import { Scroll } from '@serenity-js/web';
 import { UtilsQuestions } from '../../Questions/Utils/UtilsQuestions';
+import { Subsidiaries } from '../../Interactions/Products/Subsidiaries';
 
 
 export const HomeTask = {
     selectSubsidiary: (subsidiaryNumber:string) =>
         Task.where(
           '#actor wait and select a subsidiary',
-          WaitForElement.forXTime(),
-          Click.on(HomeUI.selectSubsidiaryModal()),
-          WriteInInput.text(subsidiaryNumber).into(HomeUI.searchSubsidiary()),  
-          WaitForElement.toBeVisible(HomeUI.foundSubsidiary()),
-          Click.on(HomeUI.foundSubsidiary()),
-          WaitForElement.toBeClickable(HomeUI.chooseSubsidiary()),
-          Click.on(HomeUI.chooseSubsidiary()),
+          WaitForElement.untilPresent(HomeUI.subsidiaryModal()),
+          Subsidiaries.searchSubsidiary(subsidiaryNumber),
         ),
     searchProduct: (pathOfProducts: string)=>
       Task.where(

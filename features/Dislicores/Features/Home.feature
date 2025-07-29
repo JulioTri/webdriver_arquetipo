@@ -1,7 +1,7 @@
 Feature: Dislicores Page Home 
 
     Background:
-        Given a user named Julio navigate to "https://d2gka11oliiwqi.cloudfront.net/"
+        Given a user named Julio navigate to "https://d1e8vhps5noqgy.cloudfront.net/"
         Then he should see that the text "Iniciar sesión" equals the expected text
         Then he clicks on the Iniciar sesión button
         Then he waits until the sidebar is displayed
