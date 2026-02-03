@@ -28,7 +28,7 @@ Then('{pronoun} continue with checkout', async (actor: Actor) => {
 });
 Then('{pronoun} pay with {string} method', async (actor: Actor, pathMethods) => {
     await actor.attemptsTo(
-      HomeTask.payMethod("Notas 1", "orden 1", "tc", pathMethods),
+      HomeTask.payMethod("Notas 1", "orden 1", "tcv", pathMethods),
     );   
 });
 Then('{pronoun} validate the payment', async (actor: Actor) => {

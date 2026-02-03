@@ -1,240 +1,153 @@
-# WebdriverIO Test Automation Framework
+# Framework QA Multi-Plataforma (WebdriverIO v9 + Serenity/JS + Screenplay)
 
-Este proyecto es un framework de automatización de pruebas basado en WebdriverIO, Cucumber y el patrón Screenplay. Permite la ejecución de pruebas en entornos web y móviles (Android/iOS), soporta pruebas en dispositivos físicos y en la granja de BrowserStack, y cuenta con reportes detallados mediante Serenity/JS.
+## Descripción breve
+Framework de automatización **end-to-end y de servicios** construido con **TypeScript**, **WebdriverIO v9** y **Serenity/JS** siguiendo el **patrón Screenplay** (Actors, Tasks, Interactions, Questions y UI).  
+Permite ejecutar pruebas desde un **solo repositorio** para:
 
-## Requisitos previos
+- 🌐 **web**: navegadores desktop
+- 📱 **web_movil**: navegador en modo móvil (emulación)
+- 🤖 **movil**: aplicaciones **nativas Android / iOS** (Appium 3)
+- 🖥️ **desktop**: aplicaciones Windows (Appium Windows)
+- 🔌 **api**: pruebas de APIs (Serenity/JS REST)
 
-Asegúrate de tener instalados los siguientes requisitos:
+---
 
-- **Node.js** (versión recomendada: 16 o superior)
-- **npm** (incluido con Node.js)
-- **WebdriverIO**
-- **Cucumber**
-- **Appium** (para pruebas móviles)
-- **Configuración de BrowserStack** (si se desea ejecutar pruebas en la nube)
+## Requisitos
 
-## Instalación del Proyecto
+### Base
+- **Node.js 20.19+** (requerido por Appium 3)
+- **npm 10+**
+- **Java 11+** (Serenity BDD CLI)
 
-Clona el repositorio y ejecuta:
+### Móvil nativo (Appium 3)
+- Appium 3
+- Android SDK
+- Xcode (iOS)
 
-```sh
+Drivers Appium (instalar una sola vez por entorno):
+```bash
+appium driver install uiautomator2
+appium driver install xcuitest
+```
+Instalación:
+```bash
 npm install
 ```
 
-Esto instalará todas las dependencias necesarias.
+> Nota: En WDIO v9 se recomienda `tsx` para ejecutar TypeScript (ya está incluido como devDependency).
 
 ---
 
-## Ejecución de Pruebas
+## Ejecución unificada (un solo comando)
 
-El framework permite ejecutar pruebas de manera flexible, tanto en local como en BrowserStack, para web y móvil.
+### Ejecutar un modo específico
+Puedes ejecutar un modo con **un solo comando**:
 
-### 1. Ejecución de todas las pruebas
-
-```sh
-npx wdio
+```bash
+npm test -- --mode=web
+npm test -- --mode=web_movil
+npm test -- --mode=movil --platform=android
+npm test -- --mode=movil --platform=ios
+npm test -- --mode=desktop
+npm test -- --mode=api
 ```
 
-(Este comando ejecuta la suite completa y corresponde a `"wdio": "wdio run ./wdio.conf.ts"` en el `package.json`)
+También tienes atajos:
+```bash
+npm run test:all
+npm run test:web
+npm run test:web_movil
+npm run test:movil:android
+npm run test:movil:ios
+npm run test:desktop
+npm run test:api
+```
+
+### Ejecutar todos los modos (secuencial)
+```bash
+npm run test:all
+```
+
+> Este comando ejecuta en orden: `web → web_movil → movil → desktop → api` y luego genera el reporte.
 
 ---
 
-### 2. Ejecución de un feature específico
+## Variables de entorno por modo
 
-Para ejecutar un archivo `.feature` específico, usa:
-
-```sh
-npx wdio -- --spec features/<nombre-del-feature>.feature
-```
-
-(Este comando corresponde a `"wdio": "wdio run ./wdio.conf.ts"` en el `package.json` con la opción `--spec` para especificar un feature)
+### web
+- `BROWSER`: `chrome` (default) | `firefox` | `edge`
 
 Ejemplo:
-
-```sh
-npx wdio -- --spec features/google_search.feature
+```bash
+BROWSER=firefox npm test -- --mode=web
 ```
 
----
+### web_movil (emulación)
+- `MOBILE_DEVICE`: nombre del device de Chrome DevTools (default: `Pixel 7`)
+- `HEADLESS`: `true` para headless (opcional)
 
-### 3. Ejecución de pruebas con reportes de Serenity/JS
-
-Para ejecutar todas las pruebas y generar reportes:
-
-```sh
-npx serenity-bdd run --features ./features
+Ejemplo:
+```bash
+MOBILE_DEVICE="iPhone X" HEADLESS=true npm test -- --mode=web_movil
 ```
 
-(Este comando genera el reporte de Serenity y corresponde a `"serenity:report": "serenity-bdd run --features ./features"` en el `package.json`)
+### movil (nativa con Appium)
+- `APP_PATH`: ruta al APK/IPA
+- `MOBILE_PLATFORM`: `Android` (default) | `iOS`
+- `ANDROID_DEVICE_NAME`: default `Android Emulator`
+- `ANDROID_PLATFORM_VERSION`: default `14`
 
----
+Ejemplo:
+```bash
+APP_PATH="C:/apps/app-debug.apk" ANDROID_DEVICE_NAME="Android Emulator" ANDROID_PLATFORM_VERSION="14" npm test -- --mode=movil
+```
 
-## Configuraciones Adicionales
+### desktop (Windows)
+- `WINDOWS_APP`: app id o ruta a exe  
+  Default: `Microsoft.WindowsCalculator_8wekyb3d8bbwe!App`
 
-### Modificación de configuraciones en `wdio.conf.ts`
+Ejemplo:
+```bash
+WINDOWS_APP="Microsoft.WindowsCalculator_8wekyb3d8bbwe!App" npm test -- --mode=desktop
+```
 
-El archivo `wdio.conf.ts` contiene todas las configuraciones, incluyendo:
+### api (services)
+- `API_BASE_URL`: base URL del servicio (útil en tus Steps/Tasks de Serenity/JS REST)
 
-- **Ambientes** (local, BrowserStack)
-- **Tiempo de espera**
-- **Paralelismo**
-- **Plataformas de ejecución**
-
-Puedes modificarlo según tus necesidades.
+Ejemplo:
+```bash
+API_BASE_URL="https://httpbin.org" npm test -- --mode=api
+```
 
 ---
 
 ## Reportes
+El runner unificado genera el reporte al final. Si deseas generarlo manualmente:
 
-Las pruebas generan reportes automáticos con Serenity/JS y Allure.
-
-### 1. Reporte de Serenity/JS
-
-Para generar y abrir el reporte:
-
-```sh
-npx serenity-bdd run --features ./features
-```
-
-(Este comando corresponde a `"serenity:report": "serenity-bdd run --features ./features"` en el `package.json`)
-
-### 2. Reporte de Allure
-
-Para generar el reporte de Allure:
-
-```sh
-npx allure generate allure-results --clean -o allure-report
-```
-
-Para abrir el reporte de Allure:
-
-```sh
-npx allure open allure-report
+```bash
+npm run serenity:report
 ```
 
 ---
 
-## CI/CD con Azure
+## Configuraciones (perfiles)
+Las configuraciones están en `./configs`:
 
-Este framework está preparado para integrarse con Azure DevOps. Puedes configurar un pipeline para ejecutar las pruebas automáticamente en cada commit.
-
-# WebdriverIO Test Automation Framework
-
-Este proyecto es un framework de automatización de pruebas basado en WebdriverIO, Cucumber y el patrón Screenplay. Permite la ejecución de pruebas en entornos web y móviles (Android/iOS), soporta pruebas en dispositivos físicos y en la granja de BrowserStack, y cuenta con reportes detallados mediante Serenity/JS.
-
-## Requisitos previos
-
-Asegúrate de tener instalados los siguientes requisitos:
-
-- **Node.js** (versión recomendada: 16 o superior)
-- **npm** (incluido con Node.js)
-- **WebdriverIO**
-- **Cucumber**
-- **Appium** (para pruebas móviles)
-- **Configuración de BrowserStack** (si se desea ejecutar pruebas en la nube)
-
-## Instalación del Proyecto
-
-Clona el repositorio y ejecuta:
-
-```sh
-npm install
-```
-
-Esto instalará todas las dependencias necesarias.
+- `wdio.shared.conf.ts` (común, **sin capabilities**)
+- `wdio.web.conf.ts`
+- `wdio.web_mobile.conf.ts`
+- `wdio.android.conf.ts`
+- `wdio.ios.conf.ts`
+- `wdio.desktop.conf.ts`
+- `wdio.api.conf.ts`
 
 ---
 
-## Ejecución de Pruebas
-
-El framework permite ejecutar pruebas de manera flexible, tanto en local como en BrowserStack, para web y móvil.
-
-### 1. Ejecución de todas las pruebas
-
-```sh
-npx wdio
-```
-
-(Este comando ejecuta la suite completa y corresponde a `"wdio": "wdio run ./wdio.conf.ts"` en el `package.json`)
+## Principios QA (Screenplay)
+- ✅ No POM tradicional
+- ✅ Reutilización mediante **Tasks/Interactions**
+- ✅ Aserciones como **Questions**
+- ❌ No `browser.pause()`
+- ✅ Esperas inteligentes y estables
 
 ---
-
-### 2. Ejecución de un feature específico
-
-Para ejecutar un archivo `.feature` específico, usa:
-
-```sh
-npx wdio -- --spec features/<nombre-del-feature>.feature
-```
-
-(Este comando corresponde a `"wdio": "wdio run ./wdio.conf.ts"` en el `package.json` con la opción `--spec` para especificar un feature)
-
-Ejemplo:
-
-```sh
-npx wdio -- --spec features/google_search.feature
-```
-
----
-
-### 3. Ejecución de pruebas con reportes de Serenity/JS
-
-Para ejecutar todas las pruebas y generar reportes:
-
-```sh
-npx serenity-bdd run --features ./features
-```
-
-(Este comando genera el reporte de Serenity y corresponde a `"serenity:report": "serenity-bdd run --features ./features"` en el `package.json`)
-
----
-
-## Configuraciones Adicionales
-
-### Modificación de configuraciones en `wdio.conf.ts`
-
-El archivo `wdio.conf.ts` contiene todas las configuraciones, incluyendo:
-
-- **Ambientes** (local, BrowserStack)
-- **Tiempo de espera**
-- **Paralelismo**
-- **Plataformas de ejecución**
-
-Puedes modificarlo según tus necesidades.
-
----
-
-## Reportes
-
-Las pruebas generan reportes automáticos con Serenity/JS y Allure.
-
-### 1. Reporte de Serenity/JS
-
-Para generar y abrir el reporte:
-
-```sh
-npx serenity-bdd run --features ./features
-```
-
-(Este comando corresponde a `"serenity:report": "serenity-bdd run --features ./features"` en el `package.json`)
-
-### 2. Reporte de Allure
-
-Para generar el reporte de Allure:
-
-```sh
-npx allure generate allure-results --clean -o allure-report
-```
-
-Para abrir el reporte de Allure:
-
-```sh
-npx allure open allure-report
-```
-
----
-
-## CI/CD con Azure
-
-Este framework está preparado para integrarse con Azure DevOps. Puedes configurar un pipeline para ejecutar las pruebas automáticamente en cada commit.
-
