@@ -1,6 +1,7 @@
 import type { WebdriverIOConfig } from '@serenity-js/webdriverio';
 import { sharedConfig as shared } from "./wdio.shared.conf";
 import { browser } from '@wdio/globals';
+import path from 'path';
 
 const merge = (
   base: WebdriverIOConfig,
@@ -13,7 +14,7 @@ const merge = (
 
 export const config: WebdriverIOConfig = merge(shared,{
 
-  specs: ['../features/mobile/android/Features/Android/Login.feature'],
+  specs: ['../features/mobile/android/Features/Login.feature'],
   exclude: [],
 
   // Appium service inicia Appium como child process :contentReference[oaicite:5]{index=5}
@@ -38,7 +39,7 @@ export const config: WebdriverIOConfig = merge(shared,{
     'appium:automationName': 'UiAutomator2',
     'appium:deviceName': process.env.ANDROID_DEVICE_NAME ?? 'Android Emulator',
     'appium:udid': process.env.ANDROID_UDID,
-    //'appium:app': path.resolve(process.env.ANDROID_APP_PATH ?? './apps/android/app.apk'),
+    'appium:app': path.resolve(process.env.ANDROID_APP_PATH ?? './apps/android/dan_pruebas.apk'),
     'appium:appPackage':process.env.ANDROID_APP_PACKAGE,
     'appium:appActivity':process.env.ANDROID_APP_ACTIVITY,
 

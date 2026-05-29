@@ -1,5 +1,5 @@
 import type { WebdriverIOConfig } from '@serenity-js/webdriverio';
-import { sharedConfig as shared } from "./wdio.shared.conf";
+import { sharedConfig as shared } from './wdio.shared.conf';
 
 const merge = (
   base: WebdriverIOConfig,
@@ -10,18 +10,15 @@ const merge = (
   serenity: { ...base.serenity, ...extra.serenity },
 });
 
+export const config: WebdriverIOConfig = merge(shared, {
+  specs: ['../features/api/Features/*.feature'],
 
-/**
- * Services / API
- * Nota: WebdriverIO requiere capabilities. Para mantener un solo runner/stack,
- * ejecutamos en modo headless y nos enfocamos en features/steps de API (Serenity/JS REST).
- *
- * Si quieres 0 navegador real, podemos migrar este perfil a ejecución directa con Cucumber
- * (sin WDIO). Se puede hacer, pero depende de tu pipeline actual.
- */
-export const config: WebdriverIOConfig = merge(shared,{
-
-  specs: ['./features/api/**/*.feature'],
+  /**
+   * Importante:
+   * Serenity/JS + WebdriverIO usa este baseUrl
+   * para configurar CallAnApi automáticamente.
+   */
+  baseUrl: process.env.API_BASE_URL,
 
   capabilities: [
     {
@@ -32,4 +29,12 @@ export const config: WebdriverIOConfig = merge(shared,{
       },
     },
   ],
+
+  cucumberOpts: {
+    require: [
+      './features/support/**/*.ts',
+      './features/step-definitions/api/**/*.ts',
+    ],
+    timeout: 60_000,
+  },
 });

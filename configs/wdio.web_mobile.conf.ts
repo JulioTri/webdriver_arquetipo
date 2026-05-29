@@ -1,5 +1,5 @@
 import type { WebdriverIOConfig } from '@serenity-js/webdriverio';
-import { sharedConfig as shared } from "./wdio.shared.conf";
+import { config as web } from './wdio.web.conf';
 
 const merge = (
   base: WebdriverIOConfig,
@@ -7,27 +7,33 @@ const merge = (
 ): WebdriverIOConfig => ({
   ...base,
   ...extra,
-  serenity: { ...base.serenity, ...extra.serenity },
+  serenity: {
+    ...base.serenity,
+    ...extra.serenity,
+  },
+  cucumberOpts: {
+    ...base.cucumberOpts,
+    ...extra.cucumberOpts,
+  },
 });
 
-
 const device = process.env.MOBILE_DEVICE ?? 'Pixel 7';
+const headless = process.env.HEADLESS === 'true';
 
-export const config: WebdriverIOConfig = merge(shared,{
-
-  /**
-   * Web en emulación móvil (Chrome DevTools mobile emulation)
-   */
+export const config: WebdriverIOConfig = merge(web, {
   capabilities: [
     {
       browserName: 'chrome',
       'wdio:enforceWebDriverClassic': true,
       'goog:chromeOptions': {
-        mobileEmulation: { deviceName: device },
-        args: process.env.HEADLESS === 'true'
+        mobileEmulation: {
+          deviceName: device,
+        },
+        args: headless
           ? ['--headless=new', '--disable-gpu']
           : [],
       },
+      acceptInsecureCerts: true,
     },
   ],
 });

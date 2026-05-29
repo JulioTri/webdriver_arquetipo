@@ -1,0 +1,76 @@
+{
+  "students": [
+    {
+      "firstName": "Juan",
+      "lastName": "Perez",
+      "email": "juan.perez@testmail.com",
+      "gender": "Male",
+      "mobile": "3001234567",
+      "dateOfBirth": {
+        "day": 15,
+        "month": "February",
+        "year": 1998
+      },
+      "subjects": ["Maths", "Physics"],
+      "hobbies": ["Sports","Reading","Music"],
+      "picture": "imagen1.png",
+      "currentAddress": "Calle 123 #45-67, Bogotá",
+      "state": "0",
+      "city": "1"
+    },
+    {
+      "firstName": "Maria",
+      "lastName": "Gomez",
+      "email": "maria.gomez@testmail.com",
+      "gender": "Female",
+      "mobile": "3019876543",
+      "dateOfBirth": {
+        "day": 8,
+        "month": "June",
+        "year": 2000
+      },
+      "subjects": ["English", "Arts"],
+      "hobbies": ["Reading"],
+      "picture": "imagen1.jpg",
+      "currentAddress": "Carrera 50 #10-20, Medellín",
+      "state": "1",
+      "city": "2"
+    },
+    {
+      "firstName": "Alex",
+      "lastName": "Rodriguez",
+      "email": "alex.rodriguez@testmail.com",
+      "gender": "Other",
+      "mobile": "3025558899",
+      "dateOfBirth": {
+        "day": 21,
+        "month": "November",
+        "year": 1995
+      },
+      "subjects": ["Computer Science"],
+      "hobbies": ["Music"],
+      "picture": "imagen1.jpeg",
+      "currentAddress": "Av. Siempre Viva 742, Cali",
+      "state": "2",
+      "city": "3"
+    },
+    {
+      "firstName": "Laura",
+      "lastName": "Martinez",
+      "email": "laura.martinez@testmail.com",
+      "gender": "Female",
+      "mobile": "3041122334",
+      "dateOfBirth": {
+        "day": 3,
+        "month": "March",
+        "year": 2002
+      },
+      "subjects": ["Biology", "Chemistry"],
+      "hobbies": ["Sports", "Reading"],
+      "picture": "imagen1.png",
+      "currentAddress": "Diagonal 80 #25-30, Barranquilla",
+      "state": "3",
+      "city": "1"
+    }
+  ]
+}

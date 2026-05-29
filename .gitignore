@@ -42,3 +42,10 @@ Thumbs.db
 *.vcxproj
 *.vcxproj.filters
 .vs/
+
+# Apps mobile (binarios descargados, no versionar)
+apps/android/*.apk
+apps/ios/*.ipa
+apps/ios/*.app
+apps/ios/*.zip
+!apps/**/.gitkeep

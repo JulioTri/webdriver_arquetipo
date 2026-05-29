@@ -12,7 +12,7 @@ const merge = (
 
 export const config: WebdriverIOConfig = merge(shared, {
   //WEB
-  specs: ["../features/Dislicores/Features/Home.feature"],
+  specs: ["../features/web/Features/Form.feature"],
   exclude: [],
   serenity: {
     crew: [
@@ -23,8 +23,8 @@ export const config: WebdriverIOConfig = merge(shared, {
       [
         "@serenity-js/web:Photographer",
         {
-          // strategy: 'TakePhotosOfFailures'  // fast execution, screenshots only when tests fail
-          strategy: "TakePhotosOfInteractions", // slower execution, more comprehensive reports
+          strategy: 'TakePhotosOfFailures'  // fast execution, screenshots only when tests fail
+          //strategy: "TakePhotosOfInteractions", // slower execution, more comprehensive reports
         },
       ],
     ],
@@ -34,10 +34,11 @@ export const config: WebdriverIOConfig = merge(shared, {
       ['allure', {outputDir: 'allure-results'}],
       'json',
       ['video', {
-          saveAllVideos: true,               // Guardar todos los videos, no solo los fallidos
-          videoSlowdownMultiplier: 1,        // Controla la velocidad del video, 1 es tiempo real
-          outputDir: 'allure-results',   // Directorio para guardar videos
-          addConsoleLogs: true,              // Añadir logs de consola al video
+          saveAllVideos: true,
+          videoSlowdownMultiplier: 1,
+          videoRenderTimeout: 30,              // Tiempo suficiente para que ffmpeg renderice videos largos
+          outputDir: 'allure-results',
+          addConsoleLogs: true,
       }],
   ],
 
@@ -48,6 +49,7 @@ export const config: WebdriverIOConfig = merge(shared, {
   capabilities: [
     {
       browserName: "chrome",
+      "wdio:enforceWebDriverClassic": true,
       "goog:chromeOptions": {
         args: [
           "--start-maximized",
@@ -66,7 +68,7 @@ export const config: WebdriverIOConfig = merge(shared, {
   cucumberOpts: {
     // <string[]> (file/dir) require files before executing features
     import: [
-      "./features/step-definitions/*.ts",
+      "./features/step-definitions/web/*.ts",
       "./features/support/*.ts",
     ],
     // <string[]> (type[:path]) specify native Cucumber.js output format, if needed. Optionally supply PATH to redirect formatter output (repeatable)

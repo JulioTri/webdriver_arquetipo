@@ -15,11 +15,15 @@ function getArg(name) {
 
 const modeArg = getArg('mode');
 const platformArg = getArg('platform'); // android | ios
+const tagsArg = getArg('tags');         // ej: @smoke  |  "@happy-path and not @wip"
+
+// También se puede pasar por variable de entorno: TAGS="@smoke"
+const tags = tagsArg || process.env.TAGS || '';
 
 // IMPORTANTE: evita usar process.env.PLATFORM como "mode" cuando PLATFORM es android/ios
 // Deja MODE como el env para elegir suite/mode. PLATFORM queda para capabilities si lo necesitas.
 const mode = (process.env.MODE || modeArg || 'web').toLowerCase();
-const platform = (platformArg || process.env.MOBILE_PLATFORM || '').toLowerCase();
+const platform = (platformArg || process.env.MOBILE_PLATFORM || process.env.PLATFORM || '').toLowerCase();
 
 let envFile = '.env';
 
@@ -30,7 +34,6 @@ if (mode === 'api') envFile = '.env.api';
 if (mode === 'movil' && platform === 'android') {
   envFile = '.env.movil.android';
 }
-
 if (mode === 'movil' && platform === 'ios') {
   envFile = '.env.movil.ios';
 }
@@ -82,21 +85,20 @@ function run(command, args, extraEnv = {}) {
 }
 
 function runWdio(configPath) {
-  run('npx', ['wdio', 'run', configPath]);
+  const args = ['wdio', 'run', configPath];
+  if (tags) args.push(`--cucumberOpts.tags=${tags}`);
+  run('npx', args);
 }
 
 function runReport() {
   run('npx', ['serenity-bdd', 'run', '--features', './features']);
 }
 
-function resolveMobileConfig() {
-  // Permite:
-  // --mode=movil --platform=android
-  // --mode=movil --platform=ios
-  if (!platform) return null;
+function resolveMobileConfig(forMode = mode, forPlatform = platform) {
+  if (!forPlatform) return null;
 
-  if (platform === 'android') return modeToConfig.movil_android;
-  if (platform === 'ios') return modeToConfig.movil_ios;
+  if (forPlatform === 'android') return modeToConfig.movil_android;
+  if (forPlatform === 'ios') return modeToConfig.movil_ios;
 
   return null;
 }
@@ -109,8 +111,7 @@ if (mode === 'all') {
     let configPath = modeToConfig[m];
 
     if (m === 'movil') {
-      // En modo all, si no especificas platform, corre Android por defecto (o cambia a iOS si prefieres)
-      const mobileConfig = resolveMobileConfig() ?? modeToConfig.movil_android;
+      const mobileConfig = resolveMobileConfig('movil') ?? modeToConfig.movil_android;
       configPath = mobileConfig;
     }
 
@@ -119,6 +120,7 @@ if (mode === 'all') {
     console.log(`\n==============================`);
     console.log(` Ejecutando modo: ${m}${m === 'movil' ? ` (${platform || 'android'})` : ''}`);
     console.log(` Config: ${configPath}`);
+    if (tags) console.log(` Tags:   ${tags}`);
     console.log(`==============================\n`);
 
     runWdio(configPath);
@@ -135,10 +137,7 @@ let configPath = modeToConfig[mode];
 if (mode === 'movil' || mode === 'mobile') {
   const mobileConfig = resolveMobileConfig();
   if (!mobileConfig) {
-    console.error(`Modo "movil" requiere --platform=android|ios (o MOBILE_PLATFORM=android|ios)`);
-    console.error(`Ejemplos:`);
-    console.error(`  npm run test:movil:android`);
-    console.error(`  npm run test:movil:ios`);
+    console.error(`Modo "${mode}" requiere --platform=android|ios (o MOBILE_PLATFORM=...)`);
     process.exit(2);
   }
   configPath = mobileConfig;
